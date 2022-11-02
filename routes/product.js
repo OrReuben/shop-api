@@ -90,10 +90,13 @@ router.get("/", async (req, res, next) => {
           (item) =>
             item.title.toLowerCase().includes(qSearch) ||
             item.desc.toLowerCase().includes(qSearch) ||
-            item.categories[0].toLowerCase().includes(qSearch)
+            item.categories[0]?.toLowerCase().includes(qSearch) ||
+            item.categories[1]?.toLowerCase().includes(qSearch) ||
+            item.categories[2]?.toLowerCase().includes(qSearch) ||
+            item.categories[3]?.toLowerCase().includes(qSearch)
         );
       };
-      products = await Product.find({})
+      await Product.find({})
         .then((data) => res.json(search(data)))
         .catch(next);
     } else {
