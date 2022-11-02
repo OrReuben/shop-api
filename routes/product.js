@@ -103,9 +103,9 @@ router.get("/", async (req, res, next) => {
       products = await Product.find();
     }
 
-    res.status(200).json(products);
+   return res.status(200).json(products);
   } catch (err) {
-    res.status(500).json(err);
+   return res.status(500).json(err);
   }
 });
 
