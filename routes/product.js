@@ -84,7 +84,7 @@ router.get("/", async (req, res, next) => {
     let products;
     if (qNew) {
       products = await Product.find().sort({ createAt: -1 }).limit(1);
-    } else if (qSearch) {
+    } else if (qSearch.length > 1) {
       const search = (data) => {
         return data.filter(
           (item) =>
