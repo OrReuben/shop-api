@@ -77,18 +77,29 @@ router.get("/gets/:username", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res, next) => {
   const qNew = req.query.new;
-  const qCategory = req.query.category;
+  const qSearch = req.query.search;
+  const qCategories = req.query.categories;
   try {
     let products;
-
     if (qNew) {
       products = await Product.find().sort({ createAt: -1 }).limit(1);
-    } else if (qCategory) {
+    } else if (qSearch) {
+      const search = (data) => {
+        return data.filter(
+          (item) =>
+            item.title.toLowerCase().includes(qSearch) ||
+            item.desc.toLowerCase().includes(qSearch)
+        );
+      };
+      await Product.find({})
+        .then((data) => res.json(search(data)))
+        .catch(next);
+    } else if (qCategories) {
       products = await Product.find({
         categories: {
-          $in: [qCategory],
+          $in: [qCategories],
         },
       });
     } else {
