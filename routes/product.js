@@ -102,7 +102,7 @@ router.get("/", async (req, res, next) => {
       };
       await Product.find({})
         .then((data) => res.json(search(data)))
-        .catch(next());
+        .catch(next);
     } else if (qCategories) {
       products = await Product.find({
         categories: {
