@@ -96,9 +96,8 @@ router.get("/", async (req, res, next) => {
             item.categories[3]?.toLowerCase().includes(qSearch)
         );
       };
-      await Product.find({})
-        .then((data) => res.json(search(data)))
-        .catch(next);
+      products = await Product.find({})
+      products = search(products)
     } else {
       products = await Product.find();
     }
