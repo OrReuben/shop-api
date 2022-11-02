@@ -77,7 +77,7 @@ router.get("/gets/:username", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
   const qNew = req.query.new;
   const qSearch = req.query.search;
   try {
@@ -96,9 +96,8 @@ router.get("/", async (req, res, next) => {
             item.categories[3]?.toLowerCase().includes(qSearch)
         );
       };
-      await Product.find({})
-        .then((data) => res.json(search(data)))
-        .catch(next);
+      const res = await Product.find({})
+       products = search(res.data)
     } else {
       products = await Product.find();
     }
