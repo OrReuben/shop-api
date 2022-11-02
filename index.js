@@ -11,6 +11,7 @@ const orderRoute = require("./routes/order");
 const stripeRoute = require("./routes/stripe");
 const cors = require("cors");
 
+header('Access-Control-Allow-Origin: *')
 app.use(cors());
 
 mongoose
