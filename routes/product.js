@@ -77,28 +77,19 @@ router.get("/gets/:username", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
   const qNew = req.query.new;
-  const qSearch = req.query.search;
+  const qCategory = req.query.category;
   try {
     let products;
     if (qNew) {
       products = await Product.find().sort({ createAt: -1 }).limit(1);
-    } else if (qSearch) {
-      const search = (data) => {
-        return data.filter(
-          (item) =>
-            item.title.toLowerCase().includes(qSearch) ||
-            item.desc.toLowerCase().includes(qSearch) ||
-            item.categories[0]?.toLowerCase().includes(qSearch) ||
-            item.categories[1]?.toLowerCase().includes(qSearch) ||
-            item.categories[2]?.toLowerCase().includes(qSearch) ||
-            item.categories[3]?.toLowerCase().includes(qSearch)
-        );
-      };
-      await Product.find({})
-        .then((data) => res.json(search(data)))
-        .catch(next);
+    } else if (qCategory) {
+      products = await Product.find({
+        categories: {
+          $in: [qCategory],
+        },
+      });
     } else {
       products = await Product.find();
     }
